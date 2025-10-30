@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Profile & Grade Calculator</title>
+</head>
+<body>
+
+    <h1> Student Grade</h1>
+
+    <form id="studentForm">
+        <label for="studentName">Student Name:</label>
+        <input type="text" id="studentName" required placeholder="Enter full name">
+
+        <label for="studentAge">Age:</label>
+        <input type="number" id="studentAge" min="5" max="100" required placeholder="Enter age">
+
+        <div class="marks-section">
+            <h3>Marks (Out of 100 Each)</h3>
+            <label for="mark1">Subject 1 Marks:</label>
+            <input type="number" id="mark1" min="0" max="100" required placeholder="e.g., 85">
+
+            <label for="mark2">Subject 2 Marks:</label>
+            <input type="number" id="mark2" min="0" max="100" required placeholder="e.g., 92">
+
+            <label for="mark3">Subject 3 Marks:</label>
+            <input type="number" id="mark3" min="0" max="100" required placeholder="e.g., 78">
+        </div>
+
+        <button type="submit">Calculate Grade & Show Profile</button>
+    </form>
+
+    <div id="results" >
+        <h2>Result Summary</h2>
+        <div class="profile-data">
+            <p>Name: <strong id="nameResult"></strong></p>
+            <p>Age: <strong id="ageResult"></strong></p>
+        </div>
+        <p>Total Marks (Out of 300): <strong id="totalMarksResult"></strong></p>
+        <p>Average Percentage: <strong id="percentageResult"></strong></p>
+        <p>Final Grade: <strong id="gradeResult"></strong></p>
+    </div>
+
+    <script>
+        document.getElementById('studentForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            calculateGrade();
+        });
+
+        function calculateGrade() {
+            const name = document.getElementById('studentName').value;
+            const age = document.getElementById('studentAge').value;
+
+
+            const mark1 = Number(document.getElementById('mark1').value);
+            const mark2 = Number(document.getElementById('mark2').value);
+            const mark3 = Number(document.getElementById('mark3').value);
+
+            if (isNaN(mark1) || isNaN(mark2) || isNaN(mark3) || 
+                mark1 < 0 || mark1 > 100 || 
+                mark2 < 0 || mark2 > 100 || 
+                mark3 < 0 || mark3 > 100) {
+                alert('Please enter valid marks between 0 and 100 for all subjects.');
+                return;
+            }
+
+            
+            const totalMarks = mark1 + mark2 + mark3;
+            const maxTotalMarks = 300;
+            const averagePercentage = (totalMarks / maxTotalMarks) * 100;
+
+        
+            const finalPercentage = averagePercentage.toFixed(2);
+
+    
+            const finalGrade = getLetterGrade(averagePercentage);
+
+        
+            document.getElementById('nameResult').textContent = name;
+            document.getElementById('ageResult').textContent = age;
+            document.getElementById('totalMarksResult').textContent = totalMarks;
+            document.getElementById('percentageResult').textContent = finalPercentage + '%';
+            document.getElementById('gradeResult').textContent = finalGrade;
+            
+            document.getElementById('results').style.display = 'block';
+        }
+
+        
+        function getLetterGrade(percentage) {
+            if (percentage >= 85) {
+                return 'A';
+            } else if (percentage >= 70) {
+                return 'B';
+            } else if (percentage >= 55) {
+                return 'C';
+            } else if (percentage >= 35) {
+                return 'D';
+            } else {
+                return 'Fail';
+            }
+        }
+    </script>
+
+</body>
+</html>
